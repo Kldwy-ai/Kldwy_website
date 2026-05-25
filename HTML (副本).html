@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>开朗的网友 · 个人网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;  /* 禁止文本选择 */
+        }
+
+        body {
+            min-height: 100vh;
+            /* 修正：使用正确的大小写 Sky.png (大写S) */
+            background: url('./bgpic/Sky.png') no-repeat center center fixed;
+            background-size: cover;
+            /* 降级背景色（仅在图片加载失败时显示） */
+            background-color: #0b1120;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* 毛玻璃卡片 - 动态彩色渐变 + 模糊，背景图片清晰可见 */
+.glass-card {
+    max-width: 880px;
+    width: 100%;
+    /* 动态渐变背景（半透明） */
+    background: linear-gradient(135deg, 
+        rgba(255, 80, 120, 0.25), 
+        rgba(0, 200, 255, 0.25), 
+        rgba(180, 70, 255, 0.25), 
+        rgba(255, 200, 50, 0.25));
+    background-size: 300% 300%;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 2.5rem;
+    padding: 2.2rem 2rem;
+    box-shadow: 0 25px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: all 0.2s;
+    animation: rgbGradientFlow 2s ease infinite;
+}
+
+/* 动态渐变流动动画 */
+@keyframes rgbGradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+        .profile-row {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .avatar-frame {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: #2c2c3a;
+            display: block;
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            border-left: 3px solid #ffd966;
+            padding-left: 0.75rem;
+            margin: 0.6rem 0 1.8rem 0;
+            backdrop-filter: blur(2px);
+            display: inline-block;
+        }
+
+        .section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            display: inline-block;
+            border-bottom: 2px solid #ffd966;
+            padding-bottom: 5px;
+            margin-bottom: 1.2rem;
+        }
+
+        .platform-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .platform-card {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 0.7rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            flex: 1 0 150px;
+            justify-content: center;
+        }
+
+        .platform-card svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .platform-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            border-color: #ffd966;
+        }
+
+        .copy-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .copy-btn {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 3rem;
+            padding: 0.7rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 0 150px;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #ffd966;
+            color: #1e1e2a;
+            transform: scale(0.98);
+        }
+
+        .copy-icon {
+            font-size: 1.4rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            color: #ffecb3;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            border-left: 4px solid #ffc107;
+            white-space: nowrap;
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        @media (max-width: 650px) {
+            .glass-card { padding: 1.5rem; }
+            .profile-row { flex-direction: column; text-align: center; }
+            .profile-name { font-size: 1.5rem; }
+            .subtitle { text-align: center; border-left: none; border-top: 2px solid #ffd966; padding-top: 6px; display: block; width: fit-content; margin: 0 auto 1.5rem auto; }
+            .platform-card, .copy-btn { min-width: 130px; }
+            .toast-msg { white-space: normal; max-width: 85vw; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+    <div class="profile-row">
+        <div class="avatar-frame">
+            <img class="avatar" src="./bgpic/头像.webp" alt="头像" draggable="false" onerror="...">
+        </div>
+        <div class="profile-name">开朗的网友爱玩我的世界</div>
+    </div>
+    <div class="subtitle">✨ 开朗的网友爱玩我的世界 的 个人网站 ✨</div>
+
+    <!-- 视频创作平台 -->
+    <div class="section">
+        <div class="section-title">🎬 主要活动平台：</div>
+        <div class="platform-grid">
+            <!-- 抖音 -->
+            <a class="platform-card" href="https://www.douyin.com/user/MS4wLjABAAAACoMYuZ9MyLh5oaC1JDKBIWBimtzOax5BrMTqdFvnkPePNWz-0-oJqARVliZmfLh2?enter_from=general_search&enter_method=general_search&extra_params=%7B%22search_params%22%3A%7B%22search_result_id%22%3A%223737939022197319%22%2C%22relation_tag%22%3A0%2C%22log_pb%22%3A%7B%22impr_id%22%3A%2220260524011410C1BBA92F0B6C2CD5D656%22%7D%2C%22search_type%22%3A%22general%22%2C%22impr_id%22%3A%2220260524011410C1BBA92F0B6C2CD5D656%22%2C%22search_id%22%3A%2220260524011410C1BBA92F0B6C2CD5D656%22%2C%22search_keyword%22%3A%22%E5%BC%80%E6%9C%97%E7%9A%84%E7%BD%91%E5%8F%8B%E7%88%B1%E7%8E%A9%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%28%E5%BC%80%E5%AD%A6%E7%89%88%29%22%2C%22token_type%22%3A%22discover_list%22%7D%7D&from_tab_name=main" target="_blank" rel="noopener noreferrer">
+                <svg width="24" height="24" viewBox="-0.32296740998066475 -3.1283528999801873 42.68446958125966 42.128352899980186"><g fill="none"><path d="M14 15.599v-1.486A13.1 13.1 0 0 0 12.337 14C5.535 14 0 19.18 0 25.547 0 29.452 2.086 32.91 5.267 35c-2.13-2.132-3.315-4.942-3.313-7.861 0-6.276 5.377-11.394 12.046-11.54" fill="#00f2ea"/><path d="M14.327 32c2.876 0 5.221-2.273 5.328-5.107l.01-25.292h4.65A8.72 8.72 0 0 1 24.164 0h-6.35l-.011 25.293c-.106 2.832-2.453 5.105-5.328 5.105a5.329 5.329 0 0 1-2.476-.61A5.34 5.34 0 0 0 14.327 32m18.672-21.814V8.78a8.818 8.818 0 0 1-4.81-1.421A8.85 8.85 0 0 0 33 10.186" fill="#00f2ea"/><path d="M28 7.718A8.63 8.63 0 0 1 25.832 2h-1.697A8.735 8.735 0 0 0 28 7.718M12.325 20.065c-2.94.004-5.322 2.361-5.325 5.27A5.267 5.267 0 0 0 9.854 30a5.2 5.2 0 0 1-1.008-3.073c.003-2.91 2.385-5.268 5.325-5.271.55 0 1.075.09 1.572.244v-6.4a11.72 11.72 0 0 0-1.572-.114c-.092 0-.183.006-.274.007v4.916a5.286 5.286 0 0 0-1.572-.244" fill="#ff004f"/><path d="M32.153 11v4.884a15.15 15.15 0 0 1-8.813-2.811V25.84c0 6.377-5.23 11.565-11.658 11.565-2.485 0-4.789-.778-6.682-2.097A11.67 11.67 0 0 0 13.528 39c6.429 0 11.659-5.188 11.659-11.564V14.668A15.15 15.15 0 0 0 34 17.478v-6.283A8.87 8.87 0 0 1 32.153 11" fill="#ff004f"/><path d="M23.979 25.42V12.632A15.741 15.741 0 0 0 33 15.448v-4.89a9.083 9.083 0 0 1-4.912-2.82C26.016 6.431 24.586 4.358 24.132 2h-4.747l-.01 25.215c-.11 2.824-2.505 5.09-5.44 5.09-1.754-.002-3.398-.822-4.42-2.204-1.794-.913-2.919-2.716-2.92-4.682.003-2.92 2.44-5.285 5.45-5.289.56 0 1.098.09 1.608.245v-4.933C7.202 15.589 2 20.722 2 27.016c0 3.045 1.219 5.816 3.205 7.885A12.115 12.115 0 0 0 12.045 37c6.58 0 11.934-5.195 11.934-11.58" fill="#fff"/></g></svg>
+                <span>抖音</span>
+            </a>
+            <!-- B站 -->
+            <a class="platform-card" href="https://space.bilibili.com/3546787797273361?spm_id_from=333.337.0.0" target="_blank" rel="noopener noreferrer">
+                <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M4.977 3.561a1.31 1.31 0 111.818-1.884l2.828 2.728c.08.078.149.163.205.254h4.277a1.32 1.32 0 01.205-.254l2.828-2.728a1.31 1.31 0 011.818 1.884L17.82 4.66h.848A5.333 5.333 0 0124 9.992v7.34a5.333 5.333 0 01-5.333 5.334H5.333A5.333 5.333 0 010 17.333V9.992a5.333 5.333 0 015.333-5.333h.781L4.977 3.56zm.356 3.67a2.667 2.667 0 00-2.666 2.667v7.529a2.667 2.667 0 002.666 2.666h13.334a2.667 2.667 0 002.666-2.666v-7.53a2.667 2.667 0 00-2.666-2.666H5.333zm1.334 5.192a1.333 1.333 0 112.666 0v1.192a1.333 1.333 0 11-2.666 0v-1.192zM16 11.09c-.736 0-1.333.597-1.333 1.333v1.192a1.333 1.333 0 102.666 0v-1.192c0-.736-.597-1.333-1.333-1.333z"/></svg>
+                <span>Bilibili</span>
+            </a>
+            <!-- GitHub -->
+            <a class="platform-card" href="https://github.com/Kldwy-AI" target="_blank" rel="noopener noreferrer">
+                <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c6.63 0 12 5.276 12 11.79-.001 5.067-3.29 9.567-8.175 11.187-.6.118-.825-.25-.825-.56 0-.398.015-1.665.015-3.242 0-1.105-.375-1.813-.81-2.181 2.67-.295 5.475-1.297 5.475-5.822 0-1.297-.465-2.344-1.23-3.169.12-.295.54-1.503-.12-3.125 0 0-1.005-.324-3.3 1.209a11.32 11.32 0 00-3-.398c-1.02 0-2.04.133-3 .398-2.295-1.518-3.3-1.209-3.3-1.209-.66 1.622-.24 2.83-.12 3.125-.765.825-1.23 1.887-1.23 3.169 0 4.51 2.79 5.527 5.46 5.822-.345.294-.66.81-.765 1.577-.69.31-2.415.81-3.495-.973-.225-.354-.9-1.223-1.845-1.209-1.005.015-.405.56.015.781.51.28 1.095 1.327 1.23 1.666.24.663 1.02 1.93 4.035 1.385 0 .988.015 1.916.015 2.196 0 .31-.225.664-.825.56C3.303 21.374-.003 16.867 0 11.791 0 5.276 5.37 0 12 0z"/></svg>
+                <span>GitHub</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 复制板块 -->
+    <div class="section">
+        <div class="section-title">📋 外网平台 · 一键复制ID</div>
+        <div class="copy-grid">
+            <div class="copy-btn" data-copy="@hukldwy" data-name="Instagram" title="点击复制账户ID">
+                <span class="copy-icon">📸</span> Instagram
+            </div>
+            <div class="copy-btn" data-copy="Kldwy Hu" data-name="Facebook" title="点击复制账户ID">
+                <span class="copy-icon">📘</span> Facebook
+            </div>
+            <div class="copy-btn" data-copy="@kldwy_mc" data-name="TikTok" title="点击复制账户ID">
+                <span class="copy-icon">🎵</span> TikTok
+            </div>
+        </div>
+        <p style="font-size:0.75rem; color:rgba(255,255,200,0.8); text-align:center; margin-top:1rem;">✨ 点击按钮复制对应平台账号ID ✨</p>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">✅ 已复制</div>
+
+<script>
+    (function() {
+        // 验证背景图是否正确加载（控制台输出辅助）
+        const bgImg = new Image();
+        bgImg.onload = () => console.log('✅ 背景图 Sky.png 加载成功');
+        bgImg.onerror = () => console.warn('⚠️ 背景图未加载，请确认文件路径: ./bgpic/Sky.png (注意大写S)');
+        bgImg.src = './bgpic/Sky.png';
+
+        // 复制功能
+        const toast = document.getElementById('toastMsg');
+        function showMsg(msg, isErr = false) {
+            toast.textContent = msg;
+            toast.style.background = isErr ? '#b52e2ed9' : '#000000d9';
+            toast.style.borderLeftColor = isErr ? '#ff8888' : '#ffc107';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        async function copyText(text, platform) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showMsg(`✅ 已复制 ${platform} ID：${text}`);
+            } catch(e) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                const ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                if(ok) showMsg(`📋 已复制 ${platform} ID：${text}`);
+                else showMsg(`❌ 复制失败，请手动复制：${text}`, true);
+            }
+        }
+
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            const copyVal = btn.getAttribute('data-copy');
+            const platformName = btn.getAttribute('data-name');
+            if(copyVal && platformName) {
+                btn.addEventListener('click', () => copyText(copyVal, platformName));
+            }
+        });
+    })();
+</script>
+</body>
+</html>
